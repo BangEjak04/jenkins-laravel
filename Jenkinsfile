@@ -21,6 +21,7 @@ pipeline {
         stage('Run Laravel Commands') {
             steps {
                 sh 'docker compose up -d'
+                sh 'docker compose exec -T app composer install --no-interaction --prefer-dist'
                 sh 'docker compose exec -T app php artisan config:clear'
                 sh 'docker compose exec -T app php artisan migrate --force'
                 sh 'docker compose exec -T app php artisan test'
