@@ -12,6 +12,16 @@ pipeline {
             }
         }
 
+        stage('Clean up existing containers') {
+            steps {
+                script {
+                    // Stop and remove all running containers
+                    sh 'docker stop $(docker ps -aq) || true'
+                    sh 'docker rm $(docker ps -aq) || true'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE .'
