@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = 'laravel-app'
+    }
+
     stages {
         stage('Checkout') {
             steps {
