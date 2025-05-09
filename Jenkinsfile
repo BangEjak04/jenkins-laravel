@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        COMPOSER_ALLOW_SUPERUSER = 1
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -14,13 +10,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker-compose build'
-            }
-        }
-
-        stage('Start Services') {
-            steps {
-                sh 'docker-compose up -d'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
@@ -32,9 +22,9 @@ pipeline {
             }
         }
 
-        stage('Cleanup') {
+        stage('Run Container') {
             steps {
-                sh 'docker-compose down'
+                sh 'docker run -d -p 8000:8000 $DOCKER_IMAGE'
             }
         }
     }
