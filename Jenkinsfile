@@ -43,7 +43,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 8500:8000 $DOCKER_IMAGE'
+                sh 'docker run -d -p 8000:8000 $DOCKER_IMAGE'
             }
         }
     }
