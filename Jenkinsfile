@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/BangEjak04/jenkins-laravel.git'
+                git branch: 'main', url: 'https://github.com/BangEjak04/jenkins-laravel.git'
             }
         }
 
