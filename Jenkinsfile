@@ -16,8 +16,7 @@ pipeline {
             steps {
                 script {
                     // Stop and remove all running containers
-                    sh 'docker stop $(docker ps -aq) || true'
-                    sh 'docker rm $(docker ps -aq) || true'
+                    sh 'docker ps -aq && docker stop $(docker ps -aq) || true && docker rm $(docker ps -aq) || true'
                 }
             }
         }
@@ -30,20 +29,13 @@ pipeline {
 
         stage('Run Laravel Commands') {
             steps {
-                sh 'docker compose up -d'
-                sh 'docker compose exec -T app composer install --no-interaction --prefer-dist'
-                sh 'docker compose exec -T app cp .env.example .env'
-                sh 'docker compose exec -T app php artisan key:generate'
-                sh 'docker compose exec -T app php artisan config:clear'
-                sh 'docker compose exec -T app php artisan migrate:fresh --seed'
-                sh 'docker compose exec -T app php artisan test'
-            }
-        }
-
-
-        stage('Run Container') {
-            steps {
-                sh 'docker run -d -p 8000:8000 $DOCKER_IMAGE'
+                sh 'docker-compose up -d'
+                sh 'docker-compose exec -T app composer install --no-interaction --prefer-dist'
+                sh 'docker-compose exec -T app cp .env.example .env'
+                sh 'docker-compose exec -T app php artisan key:generate'
+                sh 'docker-compose exec -T app php artisan config:clear'
+                sh 'docker-compose exec -T app php artisan migrate:fresh --seed'
+                sh 'docker-compose exec -T app php artisan test'
             }
         }
     }
