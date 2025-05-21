@@ -34,6 +34,7 @@ pipeline {
                 sh 'docker compose exec -T app cp .env.example .env'
                 sh 'docker compose exec -T app php artisan key:generate'
                 sh 'docker compose exec -T app php artisan config:clear'
+                sh 'docker compose exec -T app php artisan migrate'
                 sh 'docker compose exec -T app php artisan migrate:fresh --seed'
                 sh 'docker compose exec -T app php artisan test'
             }
